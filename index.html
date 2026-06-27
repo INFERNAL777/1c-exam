@@ -246,29 +246,33 @@ h2{font-size:18px;font-weight:600;margin-bottom:.75rem}
   <div id="statSections"></div>
 </div>
 
-<!-- ══ ЗАГРУЗКА ══ -->
+<!-- ══ ДОБАВИТЬ ВОПРОС ══ -->
 <div id="s-upload" class="screen">
   <div class="nav-back" onclick="goto('s-home')">‹ Назад</div>
   <h2>Добавить вопрос</h2>
-  <p class="sub">Скриншот после ответа — правильный ответ выделен зелёным. Укажи раздел вручную.</p>
-  <div class="upload-zone" onclick="document.getElementById('fi').click()">
-    <div style="font-size:36px;margin-bottom:.75rem">📷</div>
-    <strong style="font-size:15px;display:block;margin-bottom:4px">Выбрать скриншот</strong>
-    <p style="font-size:13px;color:var(--t2)">PNG или JPG</p>
+  <p class="sub">Введи вопрос, варианты ответов и отметь правильный.</p>
+
+  <div class="card">
+    <div class="sec-lbl" style="margin-bottom:.5rem">Текст вопроса</div>
+    <textarea id="mQ" placeholder="Введи текст вопроса..." style="width:100%;min-height:90px;padding:10px 12px;border:.5px solid var(--bstrong);border-radius:var(--r);background:var(--surface);color:var(--text);font-size:14px;font-family:inherit;resize:vertical;line-height:1.5"></textarea>
   </div>
-  <input type="file" id="fi" accept="image/*" style="display:none" onchange="handleFile(event)">
-  <img id="prevImg" style="max-width:100%;border-radius:8px;margin:1rem 0;border:.5px solid var(--border);display:none">
-  <div class="status-box" id="statusBox"></div>
-  <div class="parsed-card" id="parsedCard">
-    <div class="parsed-q" id="parsedQ"></div>
-    <div id="parsedOpts"></div>
-    <select class="section-select" id="sectionSelect">
+
+  <div class="card">
+    <div class="sec-lbl" style="margin-bottom:.75rem">Варианты ответов</div>
+    <div id="optsList"></div>
+    <button class="btn" style="margin-top:.5rem" onclick="addOpt()">+ Добавить вариант</button>
+  </div>
+
+  <div class="card">
+    <div class="sec-lbl" style="margin-bottom:.5rem">Раздел</div>
+    <select class="section-select" id="sectionSelect" style="margin-top:0">
       <option value="">— Выберите раздел —</option>
     </select>
   </div>
-  <div id="uploadActions" style="display:none;flex-direction:column;gap:8px;margin-top:1rem">
-    <button class="btn btn-success" onclick="saveQ()">✓ Сохранить вопрос</button>
-    <button class="btn" onclick="resetUpload()">🔄 Загрузить другой</button>
+
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:.25rem">
+    <button class="btn btn-success" onclick="saveManualQ()">✓ Сохранить вопрос</button>
+    <button class="btn" onclick="resetManual()">🗑 Очистить форму</button>
   </div>
 </div>
 
@@ -582,78 +586,68 @@ function renderStats(){
   }).join('');
 }
 
-// ══ ЗАГРУЗКА ══
-function handleFile(e){
-  const file=e.target.files[0];
-  if(!file)return;
-  pendingQ=null;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    const img=document.getElementById('prevImg');
-    img.src=ev.target.result;
-    img.style.display='block';
-    parseImg(ev.target.result, file.type||'image/jpeg');
-  };
-  reader.readAsDataURL(file);
+// ══ РУЧНОЙ ВВОД ВОПРОСА ══
+let manualOpts=[]; // {text, isCorrect}
+
+function initManual(){
+  manualOpts=[{text:'',isCorrect:true},{text:'',isCorrect:false},{text:'',isCorrect:false},{text:'',isCorrect:false}];
+  renderOpts();
 }
 
-async function parseImg(dataUrl, mediaType){
-  const status=document.getElementById('statusBox');
-  status.style.display='block'; status.textContent='⏳ Распознаю вопрос...';
-  document.getElementById('parsedCard').style.display='none';
-  document.getElementById('uploadActions').style.display='none';
-
-  const base64=dataUrl.split(',')[1];
-  const prompt=`Это скриншот из приложения для подготовки к экзамену 1С. Правильный ответ выделен зелёным цветом. Может быть от 2 до 8 вариантов. Игнорируй: "Предыдущий", "Следующий", "Подсказка", "Ссылка на ИТС", номер вопроса, метки категорий. Ответь ТОЛЬКО валидным JSON без markdown: {"q":"вопрос","opts":["вар1","вар2"],"correct":0}`;
-
-  try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:[
-        {type:'image',source:{type:'base64',media_type:mediaType,data:base64}},
-        {type:'text',text:prompt}
-      ]}]})
-    });
-    const data=await resp.json();
-    if(data.error)throw new Error(data.error.message);
-    const text=data.content.map(c=>c.text||'').join('');
-    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
-    if(!parsed.q||!Array.isArray(parsed.opts)||parsed.correct===undefined)throw new Error('Неверный формат');
-    pendingQ={id:'q_'+Date.now(),...parsed};
-    status.style.display='none';
-    document.getElementById('parsedQ').textContent=parsed.q;
-    document.getElementById('parsedOpts').innerHTML=parsed.opts.map((o,i)=>
-      `<div class="parsed-opt${i===parsed.correct?' ok':''}">${LETTERS[i]||i+1}. ${o}${i===parsed.correct?' ✓':''}</div>`
-    ).join('');
-    document.getElementById('parsedCard').style.display='block';
-    document.getElementById('uploadActions').style.display='flex';
-  }catch(err){
-    status.textContent='❌ Ошибка: '+(err.message||'').replace('Failed to fetch','нет подключения к сети');
-  }
+function renderOpts(){
+  const cont=document.getElementById('optsList');
+  cont.innerHTML=manualOpts.map((o,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <button onclick="setCorrect(${i})" title="Отметить как правильный" style="flex-shrink:0;width:32px;height:32px;border-radius:50%;border:2px solid ${o.isCorrect?'var(--green)':'var(--bstrong)'};background:${o.isCorrect?'var(--greenbg)':'transparent'};cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center">
+        ${o.isCorrect?'✓':''}
+      </button>
+      <input type="text" value="${o.text.replace(/"/g,'&quot;')}" oninput="manualOpts[${i}].text=this.value" placeholder="Вариант ${LETTERS[i]||i+1}..."
+        style="flex:1;padding:10px 12px;border:.5px solid var(--bstrong);border-radius:var(--r);background:var(--surface);color:var(--text);font-size:14px;font-family:inherit">
+      ${manualOpts.length>2?`<button onclick="removeOpt(${i})" style="flex-shrink:0;background:none;border:none;color:var(--t3);cursor:pointer;font-size:20px;line-height:1;padding:4px">×</button>`:''}
+    </div>
+  `).join('');
 }
 
-function saveQ(){
-  if(!pendingQ)return;
+function setCorrect(idx){
+  manualOpts.forEach((o,i)=>o.isCorrect=i===idx);
+  renderOpts();
+}
+
+function addOpt(){
+  if(manualOpts.length>=8){showToast('Максимум 8 вариантов');return;}
+  manualOpts.push({text:'',isCorrect:false});
+  renderOpts();
+}
+
+function removeOpt(idx){
+  if(manualOpts.length<=2){showToast('Минимум 2 варианта');return;}
+  const wasCorrect=manualOpts[idx].isCorrect;
+  manualOpts.splice(idx,1);
+  if(wasCorrect)manualOpts[0].isCorrect=true;
+  renderOpts();
+}
+
+function saveManualQ(){
+  const q=document.getElementById('mQ').value.trim();
+  if(!q){showToast('Введи текст вопроса');return;}
+  const opts=manualOpts.map(o=>o.text.trim());
+  if(opts.some(o=>!o)){showToast('Заполни все варианты ответов');return;}
+  const correct=manualOpts.findIndex(o=>o.isCorrect);
+  if(correct===-1){showToast('Отметь правильный ответ (кружок)');return;}
   const sec=parseInt(document.getElementById('sectionSelect').value);
-  if(!sec){showToast('Выберите раздел!');return;}
-  const isDup=allQ().some(q=>q.q.trim()===pendingQ.q.trim());
+  if(!sec){showToast('Выберите раздел');return;}
+  const isDup=allQ().some(x=>x.q.trim()===q);
   if(isDup){showToast('Этот вопрос уже есть в базе');return;}
-  pendingQ.section=sec;
-  db.questions.push(pendingQ);
-  save();
+  db.questions.push({id:'q_'+Date.now(),q,opts,correct,section:sec});
+  save(); updateHome();
   showToast('Сохранено! Всего: '+allQ().length);
-  resetUpload();
-  updateHome();
+  resetManual();
 }
 
-function resetUpload(){
-  document.getElementById('prevImg').style.display='none';
-  document.getElementById('statusBox').style.display='none';
-  document.getElementById('parsedCard').style.display='none';
-  document.getElementById('uploadActions').style.display='none';
-  document.getElementById('fi').value='';
-  pendingQ=null;
+function resetManual(){
+  document.getElementById('mQ').value='';
+  document.getElementById('sectionSelect').value='';
+  initManual();
 }
 
 // ══ БЭКАП ══
@@ -720,6 +714,9 @@ SECTIONS.forEach(s=>{
 });
 
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+// Инициализируем форму ввода
+initManual();
 </script>
 </body>
 </html>
