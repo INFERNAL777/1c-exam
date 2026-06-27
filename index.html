@@ -340,14 +340,7 @@ function save(){
   localStorage.setItem(ST_KEY,JSON.stringify({...st,favorites:[...st.favorites]}));
 }
 
-// Демо-вопросы
-const DEMO=[
-  {id:'d1',section:6,q:'В каком объекте содержится редактируемая пользователем информация?',opts:['Объект конфигурации','Объект встроенного языка','Объект информационной базы','Верны ответы 1 и 3','Верны все варианты'],correct:2},
-  {id:'d2',section:1,q:'В какое значение можно установить свойство "Серии кодов" объекта конфигурации "Справочник"?',opts:['Во всем справочнике','В пределах подчинения','В пределах подчинения владельцу','Верны все указанные ответы','Верны ответы 1 и 2'],correct:3},
-  {id:'d3',section:7,q:'Что такое «Регистр накопления» в 1С:Предприятие?',opts:['Справочник для хранения списков объектов','Объект для хранения информации о движениях средств','Журнал для хранения документов','Таблица для хранения произвольных данных'],correct:1},
-];
-
-function allQ(){return[...DEMO,...db.questions];}
+function allQ(){return[...db.questions];}
 function secQ(sid){return allQ().filter(q=>q.section===sid);}
 function mistakesQ(){return allQ().filter(q=>(st.mistakes[q.id]||0)>0).sort((a,b)=>(st.mistakes[b.id]||0)-(st.mistakes[a.id]||0));}
 function favQ(){return allQ().filter(q=>st.favorites.has(q.id));}
