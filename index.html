@@ -9,752 +9,717 @@
 <meta name="apple-mobile-web-app-title" content="1С Профи">
 <title>1С Профессионал — Подготовка</title>
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root {
-  --bg: #f5f5f0;
-  --surface: #ffffff;
-  --surface1: #f0f0e8;
-  --border: rgba(0,0,0,0.10);
-  --border-strong: rgba(0,0,0,0.18);
-  --text: #1a1a18;
-  --text2: #666660;
-  --text3: #aaa;
-  --radius: 10px;
-  --blue: #378ADD;
-  --blue-bg: #E6F1FB;
-  --blue-text: #185FA5;
-  --green: #1D9E75;
-  --green-bg: #EAF3DE;
-  --green-text: #085041;
-  --red: #E24B4A;
-  --red-bg: #FCEBEB;
-  --red-text: #4A1B0C;
-  --amber: #BA7517;
-  --amber-bg: #FAEEDA;
-  --amber-text: #633806;
-  --purple-bg: #EEEDFE;
-  --purple-text: #3C3489;
+  --bg:#f5f5f0;--surface:#fff;--s1:#f0f0e8;--border:rgba(0,0,0,.10);--bstrong:rgba(0,0,0,.18);
+  --text:#1a1a18;--t2:#66665f;--t3:#aaa;--r:10px;
+  --blue:#378ADD;--bluebg:#E6F1FB;--bluetx:#185FA5;
+  --green:#1D9E75;--greenbg:#EAF3DE;--greentx:#085041;
+  --red:#E24B4A;--redbg:#FCEBEB;--redtx:#4A1B0C;
+  --amber:#BA7517;--amberbg:#FAEEDA;--ambertx:#633806;
+  --purplebg:#EEEDFE;--purpletx:#3C3489;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #18181a;
-    --surface: #242428;
-    --surface1: #2e2e32;
-    --border: rgba(255,255,255,0.10);
-    --border-strong: rgba(255,255,255,0.18);
-    --text: #f0f0e8;
-    --text2: #aaa8a0;
-    --text3: #666;
-    --blue-bg: #0c2540;
-    --blue-text: #85B7EB;
-    --green-bg: #0d2a1e;
-    --green-text: #5DCAA5;
-    --red-bg: #2a0d0d;
-    --red-text: #F09595;
-    --amber-bg: #2a1a04;
-    --amber-text: #EF9F27;
-    --purple-bg: #1a1830;
-    --purple-text: #AFA9EC;
-  }
-}
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overscroll-behavior: none; }
-.screen { display: none; padding: 1rem; max-width: 600px; margin: 0 auto; padding-bottom: 2rem; }
-.screen.active { display: block; }
-
-/* Типография */
-h1 { font-size: 22px; font-weight: 600; }
-h2 { font-size: 18px; font-weight: 600; margin-bottom: 0.75rem; }
-.sub { font-size: 14px; color: var(--text2); margin-bottom: 1.25rem; line-height: 1.5; }
-
-/* Карточки */
-.card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 0.75rem; }
-
-/* Кнопки */
-.btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 18px; border-radius: var(--radius); border: 0.5px solid var(--border-strong); background: transparent; color: var(--text); font-size: 15px; font-weight: 500; cursor: pointer; width: 100%; transition: opacity 0.15s; font-family: inherit; }
-.btn:active { opacity: 0.7; }
-.btn-primary { background: var(--text); color: var(--bg); border-color: transparent; }
-.btn-success { background: var(--green); color: #fff; border-color: transparent; }
-.btn-danger-outline { border-color: var(--red); color: var(--red); }
-.btn-sm { padding: 9px 14px; font-size: 13px; width: auto; }
-.btn-row { display: flex; gap: 10px; }
-.btn-row .btn { flex: 1; }
-
-/* Навигация */
-.nav-back { display: flex; align-items: center; gap: 6px; color: var(--text2); font-size: 14px; cursor: pointer; margin-bottom: 1.25rem; padding: 4px 0; }
-.nav-back svg { width: 18px; height: 18px; }
-
-/* ──────────────────── ГЛАВНЫЙ ЭКРАН ──────────────────── */
-.logo { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 2px; }
-.logo span { color: var(--blue); }
-.header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; }
-.streak-pill { display: inline-flex; align-items: center; gap: 5px; background: var(--amber-bg); color: var(--amber-text); padding: 5px 11px; border-radius: 20px; font-size: 13px; font-weight: 600; }
-.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 1rem 0 1.25rem; }
-.stat-card { background: var(--surface1); border-radius: var(--radius); padding: 0.75rem; text-align: center; }
-.stat-num { font-size: 22px; font-weight: 600; }
-.stat-lbl { font-size: 11px; color: var(--text2); margin-top: 2px; }
-.menu-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px; margin-bottom: 8px; cursor: pointer; }
-.menu-item:active { opacity: 0.7; }
-.menu-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.menu-icon svg { width: 20px; height: 20px; }
-.menu-icon.blue { background: var(--blue-bg); color: var(--blue-text); }
-.menu-icon.green { background: var(--green-bg); color: var(--green-text); }
-.menu-icon.amber { background: var(--amber-bg); color: var(--amber-text); }
-.menu-icon.purple { background: var(--purple-bg); color: var(--purple-text); }
-.menu-text h3 { font-size: 14px; font-weight: 600; }
-.menu-text p { font-size: 12px; color: var(--text2); }
-.menu-chevron { margin-left: auto; color: var(--text3); }
-.menu-chevron svg { width: 16px; height: 16px; }
-
-/* ──────────────────── ЗАГРУЗКА ──────────────────── */
-.upload-zone { border: 1.5px dashed var(--border-strong); border-radius: 12px; padding: 2rem 1rem; text-align: center; cursor: pointer; }
-.upload-zone:active { border-color: var(--blue); background: var(--blue-bg); }
-.upload-zone svg { width: 40px; height: 40px; color: var(--text3); margin-bottom: 0.75rem; }
-.upload-zone p { font-size: 14px; color: var(--text2); }
-.upload-zone strong { font-size: 15px; color: var(--text); display: block; margin-bottom: 4px; }
-#fileInput { display: none; }
-.preview-img { max-width: 100%; border-radius: 8px; margin: 1rem 0; border: 0.5px solid var(--border); display: none; }
-.status-box { padding: 14px 16px; background: var(--surface1); border-radius: var(--radius); font-size: 13px; color: var(--text2); margin-top: 0.75rem; display: none; }
-.parsed-card { background: var(--surface); border: 0.5px solid var(--green); border-radius: 12px; padding: 1.25rem; margin-top: 0.75rem; display: none; }
-.parsed-q { font-size: 14px; font-weight: 600; margin-bottom: 0.75rem; line-height: 1.5; }
-.parsed-opt { font-size: 13px; padding: 5px 0; color: var(--text2); border-top: 0.5px solid var(--border); }
-.parsed-opt.correct { color: var(--green-text); font-weight: 600; }
-.upload-actions { margin-top: 1rem; display: none; flex-direction: column; gap: 8px; }
-
-/* ──────────────────── ТЕСТ ──────────────────── */
-.progress-wrap { margin-bottom: 1.25rem; }
-.progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.progress-label { font-size: 12px; color: var(--text2); }
-.progress-bar { height: 4px; background: var(--surface1); border-radius: 2px; }
-.progress-fill { height: 4px; background: var(--blue); border-radius: 2px; transition: width 0.35s ease; }
-.q-streak { display: none; }
-.q-streak.show { display: inline-flex; align-items: center; gap: 4px; background: var(--amber-bg); color: var(--amber-text); padding: 3px 9px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-.question-text { font-size: 16px; font-weight: 600; line-height: 1.6; margin-bottom: 1.25rem; }
-.options { display: flex; flex-direction: column; gap: 8px; }
-.option { padding: 13px 16px; border: 0.5px solid var(--border-strong); border-radius: var(--radius); cursor: pointer; font-size: 14px; line-height: 1.5; background: var(--surface); display: flex; align-items: flex-start; gap: 10px; }
-.option:active:not(.disabled) { opacity: 0.7; }
-.option.disabled { cursor: default; }
-.option.correct { border-color: var(--green); background: var(--green-bg); color: var(--green-text); }
-.option.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red-text); }
-.opt-letter { min-width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 0; opacity: 0.6; }
-.option.correct .opt-letter, .option.wrong .opt-letter { opacity: 1; }
-.feedback-box { padding: 13px 16px; border-radius: var(--radius); margin-top: 1rem; font-size: 14px; line-height: 1.5; display: none; }
-.feedback-box.correct { background: var(--green-bg); color: var(--green-text); border: 0.5px solid var(--green); }
-.feedback-box.wrong { background: var(--red-bg); color: var(--red-text); border: 0.5px solid var(--red); }
-.next-btn-wrap { margin-top: 1.25rem; display: none; }
-
-/* ──────────────────── РЕЗУЛЬТАТ ──────────────────── */
-.result-wrap { text-align: center; padding: 1rem 0; }
-.result-pct { font-size: 64px; font-weight: 700; letter-spacing: -2px; }
-.result-msg { font-size: 16px; color: var(--text2); margin-top: 0.5rem; margin-bottom: 1.5rem; }
-.result-stars { font-size: 28px; letter-spacing: 4px; margin-bottom: 0.5rem; }
-.result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 1.25rem 0; }
-.divider { height: 0.5px; background: var(--border); margin: 1rem 0; }
-
-/* ──────────────────── ОШИБКИ / СПИСОК ──────────────────── */
-.q-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem; }
-.q-card-meta { font-size: 11px; color: var(--text3); margin-bottom: 5px; }
-.q-card-text { font-size: 13px; font-weight: 600; line-height: 1.5; }
-.q-card-answer { font-size: 12px; color: var(--green-text); margin-top: 6px; }
-.q-card-errors { font-size: 11px; color: var(--red-text); background: var(--red-bg); padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 6px; }
-.tag { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; background: var(--blue-bg); color: var(--blue-text); }
-.empty-state { text-align: center; padding: 3rem 1rem; color: var(--text2); }
-.empty-state svg { width: 48px; height: 48px; color: var(--text3); margin: 0 auto 1rem; display: block; }
-.empty-state strong { font-size: 15px; color: var(--text); display: block; margin-bottom: 6px; }
-.section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); margin-bottom: 0.5rem; }
-.delete-btn { float: right; background: none; border: none; color: var(--text3); cursor: pointer; padding: 2px; margin-top: -2px; }
-.delete-btn svg { width: 16px; height: 16px; }
-.delete-btn:active { color: var(--red); }
-.toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 20px; border-radius: 20px; font-size: 14px; font-weight: 500; z-index: 999; opacity: 0; transition: opacity 0.2s; pointer-events: none; white-space: nowrap; }
-.toast.show { opacity: 1; }
+@media(prefers-color-scheme:dark){:root{
+  --bg:#18181a;--surface:#242428;--s1:#2e2e32;--border:rgba(255,255,255,.10);--bstrong:rgba(255,255,255,.18);
+  --text:#f0f0e8;--t2:#aaa8a0;--t3:#555;
+  --bluebg:#0c2540;--bluetx:#85B7EB;--greenbg:#0d2a1e;--greentx:#5DCAA5;
+  --redbg:#2a0d0d;--redtx:#F09595;--amberbg:#2a1a04;--ambertx:#EF9F27;
+  --purplebg:#1a1830;--purpletx:#AFA9EC;
+}}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overscroll-behavior:none}
+.screen{display:none;padding:1rem;max-width:600px;margin:0 auto;padding-bottom:2rem}
+.screen.active{display:block}
+h2{font-size:18px;font-weight:600;margin-bottom:.75rem}
+.sub{font-size:14px;color:var(--t2);margin-bottom:1.25rem;line-height:1.5}
+.card{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:.75rem}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 18px;border-radius:var(--r);border:.5px solid var(--bstrong);background:transparent;color:var(--text);font-size:15px;font-weight:500;cursor:pointer;width:100%;font-family:inherit}
+.btn:active{opacity:.7}
+.btn-primary{background:var(--text);color:var(--bg);border-color:transparent}
+.btn-success{background:var(--green);color:#fff;border-color:transparent}
+.btn-red{background:var(--red);color:#fff;border-color:transparent}
+.btn-outline-red{border-color:var(--red);color:var(--red)}
+.btn-sm{padding:9px 14px;font-size:13px;width:auto}
+.btn-row{display:flex;gap:10px}.btn-row .btn{flex:1}
+.nav-back{display:flex;align-items:center;gap:6px;color:var(--t2);font-size:14px;cursor:pointer;margin-bottom:1.25rem;padding:4px 0}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:1rem 0 1.25rem}
+.stat-card{background:var(--s1);border-radius:var(--r);padding:.75rem;text-align:center}
+.stat-num{font-size:22px;font-weight:600}
+.stat-lbl{font-size:11px;color:var(--t2);margin-top:2px}
+.menu-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--surface);border:.5px solid var(--border);border-radius:12px;margin-bottom:8px;cursor:pointer}
+.menu-item:active{opacity:.7}
+.mi-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px}
+.mi-text h3{font-size:14px;font-weight:600}
+.mi-text p{font-size:12px;color:var(--t2)}
+.mi-chev{margin-left:auto;color:var(--t3);font-size:18px}
+.logo{font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:2px}
+.logo span{color:var(--blue)}
+.streak-pill{display:inline-flex;align-items:center;gap:5px;background:var(--amberbg);color:var(--ambertx);padding:5px 11px;border-radius:20px;font-size:13px;font-weight:600}
+/* Прогресс */
+.prog-wrap{margin-bottom:1.25rem}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.prog-lbl{font-size:12px;color:var(--t2)}
+.prog-bar{height:4px;background:var(--s1);border-radius:2px}
+.prog-fill{height:4px;background:var(--blue);border-radius:2px;transition:width .35s ease}
+/* Вопрос */
+.q-text{font-size:16px;font-weight:600;line-height:1.6;margin-bottom:1.25rem}
+.options{display:flex;flex-direction:column;gap:8px}
+.option{padding:13px 16px;border:.5px solid var(--bstrong);border-radius:var(--r);cursor:pointer;font-size:14px;line-height:1.5;background:var(--surface);display:flex;align-items:flex-start;gap:10px}
+.option:active:not(.disabled){opacity:.7}
+.option.disabled{cursor:default}
+.option.correct{border-color:var(--green);background:var(--greenbg);color:var(--greentx)}
+.option.wrong{border-color:var(--red);background:var(--redbg);color:var(--redtx)}
+.opt-letter{min-width:24px;height:24px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;opacity:.6}
+.option.correct .opt-letter,.option.wrong .opt-letter{opacity:1}
+.feedback{padding:13px 16px;border-radius:var(--r);margin-top:1rem;font-size:14px;display:none}
+.feedback.ok{background:var(--greenbg);color:var(--greentx);border:.5px solid var(--green)}
+.feedback.err{background:var(--redbg);color:var(--redtx);border:.5px solid var(--red)}
+.fav-btn{background:none;border:none;font-size:22px;cursor:pointer;padding:4px;line-height:1}
+/* Раздел-бейдж */
+.section-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;background:var(--bluebg);color:var(--bluetx);margin-bottom:.75rem}
+/* Разделы список */
+.sec-item{display:flex;align-items:center;padding:12px 16px;background:var(--surface);border:.5px solid var(--border);border-radius:12px;margin-bottom:8px;cursor:pointer;gap:12px}
+.sec-item:active{opacity:.7}
+.sec-num{width:28px;height:28px;border-radius:50%;background:var(--bluebg);color:var(--bluetx);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.sec-info{flex:1}
+.sec-name{font-size:13px;font-weight:600}
+.sec-count{font-size:11px;color:var(--t2)}
+.sec-bar{height:3px;background:var(--s1);border-radius:2px;margin-top:5px}
+.sec-bar-fill{height:3px;background:var(--green);border-radius:2px}
+/* Результат */
+.result-big{font-size:64px;font-weight:700;letter-spacing:-2px;text-align:center}
+.result-msg{font-size:16px;color:var(--t2);margin-top:.5rem;margin-bottom:1.5rem;text-align:center}
+.result-stars{font-size:28px;letter-spacing:4px;margin-bottom:.5rem;text-align:center}
+/* Загрузка */
+.upload-zone{border:1.5px dashed var(--bstrong);border-radius:12px;padding:2rem 1rem;text-align:center;cursor:pointer}
+.upload-zone:active{border-color:var(--blue);background:var(--bluebg)}
+.status-box{padding:14px 16px;background:var(--s1);border-radius:var(--r);font-size:13px;color:var(--t2);margin-top:.75rem;display:none}
+.parsed-card{background:var(--surface);border:.5px solid var(--green);border-radius:12px;padding:1.25rem;margin-top:.75rem;display:none}
+.parsed-q{font-size:14px;font-weight:600;margin-bottom:.75rem;line-height:1.5}
+.parsed-opt{font-size:13px;padding:5px 0;border-top:.5px solid var(--border);color:var(--t2)}
+.parsed-opt.ok{color:var(--greentx);font-weight:600}
+/* Select раздела */
+.section-select{width:100%;padding:12px 14px;border:.5px solid var(--bstrong);border-radius:var(--r);background:var(--surface);color:var(--text);font-size:14px;font-family:inherit;margin-top:.75rem;margin-bottom:.75rem}
+/* Статистика */
+.stat-section-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:.5px solid var(--border)}
+.stat-section-row:last-child{border-bottom:none}
+/* Список вопросов */
+.q-card{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:.75rem}
+.q-card-meta{font-size:11px;color:var(--t3);margin-bottom:5px}
+.q-card-text{font-size:13px;font-weight:600;line-height:1.5}
+.q-card-ans{font-size:12px;color:var(--greentx);margin-top:6px}
+.q-del{float:right;background:none;border:none;color:var(--t3);cursor:pointer;padding:2px;font-size:16px}
+/* Экзамен */
+.exam-header{background:var(--amberbg);border-radius:12px;padding:1rem;margin-bottom:1rem;text-align:center}
+.exam-label{font-size:12px;color:var(--ambertx);font-weight:600;margin-bottom:4px}
+.exam-score{font-size:28px;font-weight:700;color:var(--ambertx)}
+/* Toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:20px;font-size:14px;font-weight:500;z-index:999;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+.empty{text-align:center;padding:3rem 1rem;color:var(--t2)}
+.empty .icon{font-size:40px;margin-bottom:1rem}
+.divider{height:.5px;background:var(--border);margin:1rem 0}
+.tag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;background:var(--bluebg);color:var(--bluetx)}
+.sec-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:.5rem}
 </style>
 </head>
 <body>
-
-<!-- ── TOAST ── -->
 <div class="toast" id="toast"></div>
 
-<!-- ════════════════════════════════════════
-     ГЛАВНЫЙ ЭКРАН
-════════════════════════════════════════ -->
-<div id="screen-home" class="screen active">
-  <div class="header-row" style="margin-bottom:0.25rem; padding-top:0.5rem;">
+<!-- ══ ГЛАВНАЯ ══ -->
+<div id="s-home" class="screen active">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding-top:.5rem;margin-bottom:.25rem">
     <div class="logo">1С <span>Профи</span></div>
-    <div class="streak-pill" id="streakHome" style="display:none">
-      🔥 <span id="streakCount">0</span>
-    </div>
+    <div class="streak-pill" id="streakPill" style="display:none">🔥 <span id="streakN">0</span></div>
   </div>
   <p class="sub">Подготовка к экзамену «1С:Профессионал»</p>
-
   <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-num" id="statTotal">0</div>
-      <div class="stat-lbl">Вопросов</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" id="statAccuracy">—</div>
-      <div class="stat-lbl">Верных</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" id="statAnswered">0</div>
-      <div class="stat-lbl">Пройдено</div>
-    </div>
+    <div class="stat-card"><div class="stat-num" id="hTotal">0</div><div class="stat-lbl">Вопросов</div></div>
+    <div class="stat-card"><div class="stat-num" id="hAcc">—</div><div class="stat-lbl">Верных</div></div>
+    <div class="stat-card"><div class="stat-num" id="hDone">0</div><div class="stat-lbl">Пройдено</div></div>
   </div>
-
-  <div class="menu-item" onclick="startTest('all')">
-    <div class="menu-icon blue">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.44-4.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.44-4.54Z"/></svg>
-    </div>
-    <div class="menu-text"><h3>Пройти тест</h3><p>10 случайных вопросов из базы</p></div>
-    <div class="menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></div>
+  <div class="menu-item" onclick="startExam()">
+    <div class="mi-icon" style="background:var(--amberbg);color:var(--ambertx)">🎓</div>
+    <div class="mi-text"><h3>Экзамен</h3><p>14 вопросов, нужно 12/14</p></div>
+    <div class="mi-chev">›</div>
   </div>
-
-  <div class="menu-item" onclick="startTest('mistakes')" id="menuMistakes">
-    <div class="menu-icon amber">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-    </div>
-    <div class="menu-text"><h3>Работа над ошибками</h3><p>Вопросы, на которых ошибался</p></div>
-    <div class="menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></div>
+  <div class="menu-item" onclick="goto('s-sections')">
+    <div class="mi-icon" style="background:var(--bluebg);color:var(--bluetx)">📚</div>
+    <div class="mi-text"><h3>Учить по разделам</h3><p>Выбери раздел и тренируйся</p></div>
+    <div class="mi-chev">›</div>
   </div>
-
-  <div class="menu-item" onclick="goTo('screen-upload')">
-    <div class="menu-icon green">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-    </div>
-    <div class="menu-text"><h3>Добавить вопросы</h3><p>Загрузить скриншот из приложения</p></div>
-    <div class="menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></div>
+  <div class="menu-item" onclick="startTest('all',null)">
+    <div class="mi-icon" style="background:var(--greenbg);color:var(--greentx)">🔀</div>
+    <div class="mi-text"><h3>Перемешать вопросы</h3><p>Все вопросы в случайном порядке</p></div>
+    <div class="mi-chev">›</div>
   </div>
-
-  <div class="menu-item" onclick="goTo('screen-list')">
-    <div class="menu-icon purple">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-    </div>
-    <div class="menu-text"><h3>Все вопросы</h3><p id="listHint">Просмотр и управление базой</p></div>
-    <div class="menu-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></div>
+  <div class="menu-item" onclick="startTest('fav',null)">
+    <div class="mi-icon" style="background:var(--redbg);color:var(--redtx)">⭐</div>
+    <div class="mi-text"><h3>Избранные</h3><p id="favHint">Отмеченные вопросы</p></div>
+    <div class="mi-chev">›</div>
+  </div>
+  <div class="menu-item" onclick="startTest('mistakes',null)">
+    <div class="mi-icon" style="background:var(--amberbg);color:var(--ambertx)">⚠️</div>
+    <div class="mi-text"><h3>Работа над ошибками</h3><p id="mistHint">Вопросы с ошибками</p></div>
+    <div class="mi-chev">›</div>
+  </div>
+  <div class="menu-item" onclick="goto('s-stats')">
+    <div class="mi-icon" style="background:var(--purplebg);color:var(--purpletx)">📊</div>
+    <div class="mi-text"><h3>Статистика</h3><p>Прогресс по разделам</p></div>
+    <div class="mi-chev">›</div>
+  </div>
+  <div class="menu-item" onclick="goto('s-upload')">
+    <div class="mi-icon" style="background:var(--s1);color:var(--t2)">📷</div>
+    <div class="mi-text"><h3>Добавить вопросы</h3><p>Загрузить скриншот</p></div>
+    <div class="mi-chev">›</div>
+  </div>
+  <div class="menu-item" onclick="goto('s-backup')">
+    <div class="mi-icon" style="background:var(--s1);color:var(--t2)">💾</div>
+    <div class="mi-text"><h3>Резервная копия</h3><p>Экспорт и импорт базы</p></div>
+    <div class="mi-chev">›</div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     ЗАГРУЗКА СКРИНШОТА
-════════════════════════════════════════ -->
-<div id="screen-upload" class="screen">
-  <div class="nav-back" onclick="goTo('screen-home')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-    Назад
+<!-- ══ РАЗДЕЛЫ ══ -->
+<div id="s-sections" class="screen">
+  <div class="nav-back" onclick="goto('s-home')">‹ Назад</div>
+  <h2>Разделы</h2>
+  <div id="sectionsList"></div>
+</div>
+
+<!-- ══ ТЕСТ ══ -->
+<div id="s-test" class="screen">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+    <div class="nav-back" style="margin-bottom:0" onclick="confirmExit()">‹ Выйти</div>
+    <button class="fav-btn" id="favBtn" onclick="toggleFav()" title="В избранное">☆</button>
   </div>
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <span class="prog-lbl" id="progLbl">Вопрос 1 из 10</span>
+      <span id="streakBadge" style="display:none;background:var(--amberbg);color:var(--ambertx);padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600">🔥 <span id="sBadgeN">0</span></span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  </div>
+  <div id="examHeader" class="exam-header" style="display:none">
+    <div class="exam-label">ЭКЗАМЕН · нужно 12 из 14</div>
+    <div class="exam-score">✓ <span id="examOk">0</span> / ✗ <span id="examFail">0</span></div>
+  </div>
+  <div class="section-badge" id="qSection" style="display:none"></div>
+  <div class="q-text" id="qText"></div>
+  <div class="options" id="opts"></div>
+  <div class="feedback" id="fb"></div>
+  <div style="margin-top:1.25rem;display:none" id="nextWrap">
+    <button class="btn btn-primary" onclick="nextQ()">Следующий вопрос ›</button>
+  </div>
+  <div id="testEmpty" style="display:none">
+    <div class="empty"><div class="icon">🗄️</div><strong>Нет вопросов</strong><p style="margin-top:.5rem;font-size:13px">Загрузите скриншоты чтобы наполнить базу</p></div>
+  </div>
+</div>
+
+<!-- ══ РЕЗУЛЬТАТ ══ -->
+<div id="s-result" class="screen">
+  <div class="result-stars" id="rStars"></div>
+  <div class="result-big" id="rPct">—</div>
+  <div class="result-msg" id="rMsg"></div>
+  <div id="examResult" style="display:none;padding:1rem;border-radius:12px;margin-bottom:1rem;text-align:center"></div>
+  <div class="stats-row">
+    <div class="stat-card" style="border:.5px solid var(--green)"><div class="stat-num" style="color:var(--green)" id="rOk">0</div><div class="stat-lbl">Верных</div></div>
+    <div class="stat-card" style="border:.5px solid var(--red)"><div class="stat-num" style="color:var(--red)" id="rErr">0</div><div class="stat-lbl">Ошибок</div></div>
+    <div class="stat-card" style="border:.5px solid var(--amber)"><div class="stat-num" style="color:var(--amber)" id="rBest">0</div><div class="stat-lbl">Серия</div></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:.5rem">
+    <button class="btn btn-primary" onclick="startTest(lastMode,lastSection)">🔄 Ещё раз</button>
+    <button class="btn" onclick="goto('s-home')">🏠 На главную</button>
+  </div>
+</div>
+
+<!-- ══ СТАТИСТИКА ══ -->
+<div id="s-stats" class="screen">
+  <div class="nav-back" onclick="goto('s-home')">‹ Назад</div>
+  <h2>Статистика</h2>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num" id="stTotal">0</div><div class="stat-lbl">Всего отв.</div></div>
+    <div class="stat-card"><div class="stat-num" id="stAcc">—</div><div class="stat-lbl">Точность</div></div>
+    <div class="stat-card"><div class="stat-num" id="stStreak">0</div><div class="stat-lbl">Серия дней</div></div>
+  </div>
+  <div class="sec-lbl" style="margin-top:.5rem">По разделам</div>
+  <div id="statSections"></div>
+</div>
+
+<!-- ══ ЗАГРУЗКА ══ -->
+<div id="s-upload" class="screen">
+  <div class="nav-back" onclick="goto('s-home')">‹ Назад</div>
   <h2>Добавить вопрос</h2>
-  <p class="sub">Сделайте скриншот после ответа — когда правильный ответ выделен зелёным. Claude распознает вопрос и варианты автоматически.</p>
-
-  <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-      <polyline points="21 15 16 10 5 21"/>
-    </svg>
-    <strong>Выбрать скриншот</strong>
-    <p>PNG или JPG · один вопрос на изображении</p>
+  <p class="sub">Скриншот после ответа — правильный ответ выделен зелёным. Укажи раздел вручную.</p>
+  <div class="upload-zone" onclick="document.getElementById('fi').click()">
+    <div style="font-size:36px;margin-bottom:.75rem">📷</div>
+    <strong style="font-size:15px;display:block;margin-bottom:4px">Выбрать скриншот</strong>
+    <p style="font-size:13px;color:var(--t2)">PNG или JPG</p>
   </div>
-  <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
-
-  <img id="previewImg" class="preview-img">
-  <div class="status-box" id="statusBox">⏳ Распознаю вопрос...</div>
-
+  <input type="file" id="fi" accept="image/*" style="display:none" onchange="handleFile(event)">
+  <img id="prevImg" style="max-width:100%;border-radius:8px;margin:1rem 0;border:.5px solid var(--border);display:none">
+  <div class="status-box" id="statusBox"></div>
   <div class="parsed-card" id="parsedCard">
     <div class="parsed-q" id="parsedQ"></div>
     <div id="parsedOpts"></div>
+    <select class="section-select" id="sectionSelect">
+      <option value="">— Выберите раздел —</option>
+    </select>
   </div>
-
-  <div class="upload-actions" id="uploadActions">
-    <button class="btn btn-success" onclick="saveQuestion()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>
-      Сохранить вопрос
-    </button>
-    <button class="btn" onclick="resetUpload()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-      Загрузить другой
-    </button>
+  <div id="uploadActions" style="display:none;flex-direction:column;gap:8px;margin-top:1rem">
+    <button class="btn btn-success" onclick="saveQ()">✓ Сохранить вопрос</button>
+    <button class="btn" onclick="resetUpload()">🔄 Загрузить другой</button>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     ТЕСТ
-════════════════════════════════════════ -->
-<div id="screen-test" class="screen">
-  <div class="nav-back" onclick="confirmExitTest()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-    Выйти
+<!-- ══ БЭКАП ══ -->
+<div id="s-backup" class="screen">
+  <div class="nav-back" onclick="goto('s-home')">‹ Назад</div>
+  <h2>Резервная копия</h2>
+  <div class="card">
+    <div class="sec-lbl" style="margin-bottom:.75rem">Экспорт</div>
+    <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.5">Скачать все ваши вопросы как JSON. Храни в Telegram или Google Drive.</p>
+    <button class="btn btn-primary" onclick="exportQ()">⬆ Скачать резервную копию</button>
+    <p style="font-size:12px;color:var(--t3);margin-top:.75rem" id="expHint"></p>
   </div>
-
-  <div class="progress-wrap">
-    <div class="progress-top">
-      <span class="progress-label" id="progressLabel">Вопрос 1 из 10</span>
-      <span class="q-streak" id="qStreak">🔥 <span id="streakNum">0</span></span>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="card">
+    <div class="sec-lbl" style="margin-bottom:.75rem">Импорт</div>
+    <p style="font-size:13px;color:var(--t2);margin-bottom:1rem;line-height:1.5">Загрузить ранее сохранённый JSON. Дубликаты пропускаются.</p>
+    <button class="btn" onclick="document.getElementById('impInput').click()">⬇ Загрузить файл</button>
+    <input type="file" id="impInput" accept=".json" style="display:none" onchange="importQ(event)">
+    <p style="font-size:12px;color:var(--t3);margin-top:.75rem" id="impHint"></p>
   </div>
-
-  <div id="testEmpty" style="display:none">
-    <div class="empty-state">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="12" rx="10" ry="4"/><path d="M2 12c0 2.21 4.48 4 10 4s10-1.79 10-4"/><path d="M2 16c0 2.21 4.48 4 10 4s10-1.79 10-4"/><path d="M2 8v8M22 8v8"/></svg>
-      <strong>Вопросов нет</strong>
-      <p>Загрузите скриншоты, чтобы наполнить базу</p>
-      <div style="margin-top:1.25rem">
-        <button class="btn btn-primary btn-sm" onclick="goTo('screen-upload')" style="margin:0 auto; width:auto; padding:10px 20px">Добавить вопросы</button>
-      </div>
-    </div>
+  <div class="card" style="border-color:var(--red)">
+    <div class="sec-lbl" style="margin-bottom:.75rem;color:var(--red)">Опасная зона</div>
+    <button class="btn btn-outline-red" onclick="resetAll()">🗑 Сбросить всё</button>
   </div>
-
-  <div id="testContent">
-    <div class="question-text" id="questionText"></div>
-    <div class="options" id="optionsContainer"></div>
-    <div class="feedback-box" id="feedbackBox"></div>
-    <div class="next-btn-wrap" id="nextBtnWrap">
-      <button class="btn btn-primary" onclick="nextQuestion()">
-        Следующий вопрос
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="m9 18 6-6-6-6"/></svg>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════
-     РЕЗУЛЬТАТ
-════════════════════════════════════════ -->
-<div id="screen-result" class="screen">
-  <div class="result-wrap">
-    <div class="result-stars" id="resultStars"></div>
-    <div class="result-pct" id="resultPct">—</div>
-    <div class="result-msg" id="resultMsg"></div>
-  </div>
-
-  <div class="result-stats">
-    <div class="stat-card" style="border:0.5px solid var(--green)">
-      <div class="stat-num" style="color:var(--green)" id="resCorrect">0</div>
-      <div class="stat-lbl">Верных</div>
-    </div>
-    <div class="stat-card" style="border:0.5px solid var(--red)">
-      <div class="stat-num" style="color:var(--red)" id="resWrong">0</div>
-      <div class="stat-lbl">Ошибок</div>
-    </div>
-    <div class="stat-card" style="border:0.5px solid var(--amber)">
-      <div class="stat-num" style="color:var(--amber)" id="resBest">0</div>
-      <div class="stat-lbl">Серия</div>
-    </div>
-  </div>
-
-  <div style="display:flex; flex-direction:column; gap:10px; margin-top:0.5rem;">
-    <button class="btn btn-primary" onclick="startTest(lastMode)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-      Ещё раз
-    </button>
-    <button class="btn" onclick="goTo('screen-home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      На главную
-    </button>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════
-     СПИСОК ВОПРОСОВ
-════════════════════════════════════════ -->
-<div id="screen-list" class="screen">
-  <div class="nav-back" onclick="goTo('screen-home')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-    Назад
-  </div>
-  <h2>База вопросов</h2>
-  <div id="listContent"></div>
 </div>
 
 <script>
-// ════ ХРАНИЛИЩЕ ════
-const DB_KEY = 'exam1c_db_v2';
-const STATS_KEY = 'exam1c_stats_v2';
+// ══ ДАННЫЕ ══
+const DB_KEY='exam1c_v3', ST_KEY='exam1c_st_v3';
+const SECTIONS=[
+  {id:1,name:'Общие механизмы, понятия и термины'},
+  {id:2,name:'Редакторы и инструменты общие'},
+  {id:3,name:'Редакторы и инструменты режима разработки'},
+  {id:4,name:'Конструкторы'},
+  {id:5,name:'Технология разработки'},
+  {id:6,name:'Объектная модель прикладного решения'},
+  {id:7,name:'Табличная модель прикладного решения'},
+  {id:8,name:'Механизмы интеграции и обмена данными'},
+  {id:9,name:'Система взаимодействия'},
+  {id:10,name:'Интерфейсные механизмы'},
+  {id:11,name:'Механизмы построения отчетности'},
+  {id:12,name:'Механизмы оперативного учета'},
+  {id:13,name:'Объекты и механизмы бухгалтерского учета'},
+  {id:14,name:'Механизмы сложных периодических расчетов'},
+];
+const LETTERS=['А','Б','В','Г','Д','Е','Ж','З'];
 
-let db = { questions: [] };
-let stats = { totalAnswered: 0, totalCorrect: 0, streak: 0, lastDay: '', mistakes: {} };
+let db={questions:[]};
+let st={answered:0,correct:0,streak:0,lastDay:'',mistakes:{},favorites:new Set(),sectionStats:{}};
+let session={};
+let lastMode='all', lastSection=null;
+let pendingQ=null;
 
-function loadAll() {
-  try { db = JSON.parse(localStorage.getItem(DB_KEY)) || { questions: [] }; } catch(e) { db = { questions: [] }; }
-  try { stats = JSON.parse(localStorage.getItem(STATS_KEY)) || { totalAnswered:0, totalCorrect:0, streak:0, lastDay:'', mistakes:{} }; } catch(e) {}
-  if (!db.questions) db.questions = [];
-  if (!stats.mistakes) stats.mistakes = {};
+function load(){
+  try{db=JSON.parse(localStorage.getItem(DB_KEY))||{questions:[]};}catch(e){db={questions:[]};}
+  try{
+    const raw=JSON.parse(localStorage.getItem(ST_KEY))||{};
+    st={answered:raw.answered||0,correct:raw.correct||0,streak:raw.streak||0,lastDay:raw.lastDay||'',
+        mistakes:raw.mistakes||{},favorites:new Set(raw.favorites||[]),sectionStats:raw.sectionStats||{}};
+  }catch(e){}
+  if(!db.questions)db.questions=[];
 }
-function saveAll() {
-  localStorage.setItem(DB_KEY, JSON.stringify(db));
-  localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+function save(){
+  localStorage.setItem(DB_KEY,JSON.stringify(db));
+  localStorage.setItem(ST_KEY,JSON.stringify({...st,favorites:[...st.favorites]}));
 }
 
-// ════ ДЕМО-ВОПРОСЫ ════
-const DEMO_QS = [
-  { id:'demo_1', q:'В какое значение можно установить свойство "Серии кодов" объекта конфигурации "Справочник"?', opts:['Во всем справочнике','В пределах подчинения','В пределах подчинения владельцу','Верны все указанные ответы','Верны ответы 1 и 2'], correct:3 },
-  { id:'demo_2', q:'Что такое «Регистр накопления» в 1С:Предприятие?', opts:['Справочник для хранения списков объектов','Объект для хранения информации о движениях средств (накопление остатков или оборотов)','Журнал для хранения документов','Таблица для хранения произвольных данных'], correct:1 },
-  { id:'demo_3', q:'Какой объект 1С используется для хранения дополнительных сведений о другом объекте без его модификации?', opts:['Документ','Регистр сведений','Планы обмена','Нумераторы'], correct:1 },
-  { id:'demo_4', q:'В каком режиме работает «Конфигуратор» 1С:Предприятие?', opts:['Пользовательский режим','Режим разработки и настройки конфигурации','Режим веб-сервера','Режим тонкого клиента'], correct:1 },
-  { id:'demo_5', q:'Какой тип данных в 1С используется для хранения набора значений?', opts:['Массив','Структура','Соответствие','Список значений','Все перечисленные'], correct:4 },
+// Демо-вопросы
+const DEMO=[
+  {id:'d1',section:6,q:'В каком объекте содержится редактируемая пользователем информация?',opts:['Объект конфигурации','Объект встроенного языка','Объект информационной базы','Верны ответы 1 и 3','Верны все варианты'],correct:2},
+  {id:'d2',section:1,q:'В какое значение можно установить свойство "Серии кодов" объекта конфигурации "Справочник"?',opts:['Во всем справочнике','В пределах подчинения','В пределах подчинения владельцу','Верны все указанные ответы','Верны ответы 1 и 2'],correct:3},
+  {id:'d3',section:7,q:'Что такое «Регистр накопления» в 1С:Предприятие?',opts:['Справочник для хранения списков объектов','Объект для хранения информации о движениях средств','Журнал для хранения документов','Таблица для хранения произвольных данных'],correct:1},
 ];
 
-function allQuestions() {
-  return [...DEMO_QS, ...db.questions];
-}
-function mistakeQuestions() {
-  return allQuestions().filter(q => (stats.mistakes[q.id] || 0) > 0)
-    .sort((a,b) => (stats.mistakes[b.id]||0) - (stats.mistakes[a.id]||0));
-}
+function allQ(){return[...DEMO,...db.questions];}
+function secQ(sid){return allQ().filter(q=>q.section===sid);}
+function mistakesQ(){return allQ().filter(q=>(st.mistakes[q.id]||0)>0).sort((a,b)=>(st.mistakes[b.id]||0)-(st.mistakes[a.id]||0));}
+function favQ(){return allQ().filter(q=>st.favorites.has(q.id));}
 
-// ════ НАВИГАЦИЯ ════
-function goTo(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+// ══ НАВИГАЦИЯ ══
+function goto(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
-  if (id === 'screen-home') updateHome();
-  if (id === 'screen-list') renderList();
+  if(id==='s-home')updateHome();
+  if(id==='s-sections')renderSections();
+  if(id==='s-stats')renderStats();
+  if(id==='s-backup')document.getElementById('expHint').textContent='';
 }
-function goToRaw(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+function gotoRaw(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
 }
 
-// ════ ГЛАВНЫЙ ЭКРАН ════
-function updateHome() {
-  const all = allQuestions();
-  const userCount = db.questions.length;
-  document.getElementById('statTotal').textContent = all.length;
-  document.getElementById('listHint').textContent = userCount > 0
-    ? userCount + ' загружено вами'
-    : 'Просмотр и управление базой';
-
-  if (stats.totalAnswered > 0) {
-    const pct = Math.round(stats.totalCorrect / stats.totalAnswered * 100);
-    document.getElementById('statAccuracy').textContent = pct + '%';
-  } else {
-    document.getElementById('statAccuracy').textContent = '—';
-  }
-  document.getElementById('statAnswered').textContent = stats.totalAnswered;
-
-  const today = new Date().toDateString();
-  if (stats.lastDay === today && stats.streak > 0) {
-    document.getElementById('streakHome').style.display = 'inline-flex';
-    document.getElementById('streakCount').textContent = stats.streak;
-  } else {
-    document.getElementById('streakHome').style.display = 'none';
-  }
-
-  const mistakes = mistakeQuestions();
-  document.getElementById('menuMistakes').querySelector('p').textContent =
-    mistakes.length > 0 ? mistakes.length + ' вопросов с ошибками' : 'Ошибок пока нет';
+// ══ ГЛАВНАЯ ══
+function updateHome(){
+  const all=allQ();
+  document.getElementById('hTotal').textContent=all.length;
+  document.getElementById('hDone').textContent=st.answered;
+  document.getElementById('hAcc').textContent=st.answered>0?Math.round(st.correct/st.answered*100)+'%':'—';
+  const today=new Date().toDateString();
+  if(st.lastDay===today&&st.streak>0){
+    document.getElementById('streakPill').style.display='inline-flex';
+    document.getElementById('streakN').textContent=st.streak;
+  }else document.getElementById('streakPill').style.display='none';
+  const fav=favQ().length, mis=mistakesQ().length;
+  document.getElementById('favHint').textContent=fav>0?fav+' вопросов':'Отмеченные вопросы';
+  document.getElementById('mistHint').textContent=mis>0?mis+' вопросов с ошибками':'Ошибок пока нет';
 }
 
-// ════ ТЕСТ ════
-let session = {};
-let lastMode = 'all';
+// ══ РАЗДЕЛЫ ══
+function renderSections(){
+  const cont=document.getElementById('sectionsList');
+  cont.innerHTML=SECTIONS.map(s=>{
+    const qs=secQ(s.id);
+    const total=qs.length;
+    const done=qs.filter(q=>st.mistakes[q.id]!==undefined||st.sectionStats[s.id]>0).length;
+    const acc=st.sectionStats[s.id]||0;
+    return`<div class="sec-item" onclick="startTest('section',${s.id})">
+      <div class="sec-num">${s.id}</div>
+      <div class="sec-info">
+        <div class="sec-name">${s.name}</div>
+        <div class="sec-count">${total} вопр.${acc>0?' · '+acc+'% верных':''}</div>
+        <div class="sec-bar"><div class="sec-bar-fill" style="width:${acc}%"></div></div>
+      </div>
+      <div class="mi-chev">›</div>
+    </div>`;
+  }).join('');
+}
 
-function startTest(mode) {
-  lastMode = mode;
-  const pool = mode === 'mistakes' ? mistakeQuestions() : allQuestions();
-  if (pool.length === 0) {
-    goTo('screen-home');
-    showToast(mode === 'mistakes' ? 'Ошибок нет — отличный результат!' : 'Вопросов нет. Загрузите скриншоты.');
+// ══ ТЕСТ ══
+function startExam(){
+  // По 1 вопросу из каждого раздела
+  const pool=[];
+  SECTIONS.forEach(s=>{
+    const qs=secQ(s.id);
+    if(qs.length>0)pool.push(qs[Math.floor(Math.random()*qs.length)]);
+  });
+  if(pool.length===0){showToast('Нет вопросов — загрузите скриншоты');return;}
+  lastMode='exam'; lastSection=null;
+  session={questions:pool,idx:0,correct:0,wrong:0,bestStreak:0,curStreak:0,isExam:true};
+  gotoRaw('s-test');
+  document.getElementById('examHeader').style.display='block';
+  document.getElementById('testEmpty').style.display='none';
+  renderQ();
+}
+
+function startTest(mode,section){
+  lastMode=mode; lastSection=section;
+  let pool;
+  if(mode==='section')pool=secQ(section);
+  else if(mode==='mistakes')pool=mistakesQ();
+  else if(mode==='fav')pool=favQ();
+  else pool=allQ();
+  if(pool.length===0){
+    showToast(mode==='fav'?'Нет избранных':mode==='mistakes'?'Ошибок нет!':'Нет вопросов');
     return;
   }
-  const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, Math.min(10, pool.length));
-  session = { questions: shuffled, idx: 0, correct: 0, wrong: 0, bestStreak: 0, curStreak: 0 };
-  goToRaw('screen-test');
-  document.getElementById('testEmpty').style.display = 'none';
-  document.getElementById('testContent').style.display = 'block';
-  renderQuestion();
+  const shuffled=[...pool].sort(()=>Math.random()-.5);
+  const take=mode==='all'?Math.min(20,shuffled.length):shuffled.length;
+  session={questions:shuffled.slice(0,take),idx:0,correct:0,wrong:0,bestStreak:0,curStreak:0,isExam:false};
+  gotoRaw('s-test');
+  document.getElementById('examHeader').style.display='none';
+  document.getElementById('testEmpty').style.display='none';
+  renderQ();
 }
 
-const LETTERS = ['А','Б','В','Г','Д','Е','Ж','З'];
-
-function renderQuestion() {
-  const q = session.questions[session.idx];
-  const total = session.questions.length;
-  const pct = session.idx / total * 100;
-
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = 'Вопрос ' + (session.idx+1) + ' из ' + total;
-  document.getElementById('questionText').textContent = q.q;
-
-  const streak = document.getElementById('qStreak');
-  if (session.curStreak >= 2) {
-    streak.className = 'q-streak show';
-    document.getElementById('streakNum').textContent = session.curStreak;
-  } else { streak.className = 'q-streak'; }
-
-  const cont = document.getElementById('optionsContainer');
-  cont.innerHTML = '';
-  q.opts.forEach((opt, i) => {
-    const el = document.createElement('div');
-    el.className = 'option';
-    el.innerHTML = '<div class="opt-letter">' + (LETTERS[i] || i+1) + '</div><div>' + opt + '</div>';
-    el.addEventListener('click', () => doAnswer(i, q, el));
+function renderQ(){
+  const q=session.questions[session.idx];
+  const total=session.questions.length;
+  document.getElementById('progFill').style.width=(session.idx/total*100)+'%';
+  document.getElementById('progLbl').textContent='Вопрос '+(session.idx+1)+' из '+total;
+  // Раздел
+  const sec=SECTIONS.find(s=>s.id===q.section);
+  const sb=document.getElementById('qSection');
+  if(sec){sb.style.display='inline-block';sb.textContent=sec.id+'. '+sec.name;}
+  else sb.style.display='none';
+  // Избранное
+  document.getElementById('favBtn').textContent=st.favorites.has(q.id)?'★':'☆';
+  document.getElementById('qText').textContent=q.q;
+  // Серия
+  const sb2=document.getElementById('streakBadge');
+  if(session.curStreak>=2){sb2.style.display='inline-block';document.getElementById('sBadgeN').textContent=session.curStreak;}
+  else sb2.style.display='none';
+  // Экзамен счёт
+  if(session.isExam){
+    document.getElementById('examOk').textContent=session.correct;
+    document.getElementById('examFail').textContent=session.wrong;
+  }
+  // Варианты
+  const cont=document.getElementById('opts');
+  cont.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const el=document.createElement('div');
+    el.className='option';
+    el.innerHTML='<div class="opt-letter">'+(LETTERS[i]||i+1)+'</div><div>'+opt+'</div>';
+    el.addEventListener('click',()=>doAnswer(i,q,el));
     cont.appendChild(el);
   });
-
-  document.getElementById('feedbackBox').style.display = 'none';
-  document.getElementById('nextBtnWrap').style.display = 'none';
+  document.getElementById('fb').style.display='none';
+  document.getElementById('nextWrap').style.display='none';
 }
 
-function doAnswer(chosen, q, chosenEl) {
-  // prevent double-tap
-  const opts = document.querySelectorAll('.option');
-  if (opts[0].classList.contains('disabled')) return;
-  opts.forEach(o => o.classList.add('disabled'));
-
-  const isCorrect = chosen === q.correct;
-  const fb = document.getElementById('feedbackBox');
-
-  if (isCorrect) {
+function doAnswer(chosen,q,chosenEl){
+  const opts=document.querySelectorAll('.option');
+  if(opts[0].classList.contains('disabled'))return;
+  opts.forEach(o=>o.classList.add('disabled'));
+  const ok=chosen===q.correct;
+  const fb=document.getElementById('fb');
+  if(ok){
     chosenEl.classList.add('correct');
-    session.correct++;
-    session.curStreak++;
-    if (session.curStreak > session.bestStreak) session.bestStreak = session.curStreak;
-    stats.totalCorrect++;
-    fb.className = 'feedback-box correct';
-    fb.textContent = '✓ Верно!';
-    if (session.curStreak >= 2) {
-      document.getElementById('qStreak').className = 'q-streak show';
-      document.getElementById('streakNum').textContent = session.curStreak;
-    }
-  } else {
+    session.correct++; session.curStreak++;
+    if(session.curStreak>session.bestStreak)session.bestStreak=session.curStreak;
+    st.correct++;
+    fb.className='feedback ok'; fb.textContent='✓ Верно!';
+    if(session.curStreak>=2){document.getElementById('streakBadge').style.display='inline-block';document.getElementById('sBadgeN').textContent=session.curStreak;}
+  }else{
     chosenEl.classList.add('wrong');
     opts[q.correct].classList.add('correct');
-    session.wrong++;
-    session.curStreak = 0;
-    document.getElementById('qStreak').className = 'q-streak';
-    stats.mistakes[q.id] = (stats.mistakes[q.id] || 0) + 1;
-    fb.className = 'feedback-box wrong';
-    fb.textContent = '✗ Неверно. Правильный ответ выделен зелёным.';
+    session.wrong++; session.curStreak=0;
+    document.getElementById('streakBadge').style.display='none';
+    st.mistakes[q.id]=(st.mistakes[q.id]||0)+1;
+    fb.className='feedback err'; fb.textContent='✗ Неверно. Правильный ответ выделен зелёным.';
   }
-
-  stats.totalAnswered++;
+  if(session.isExam){document.getElementById('examOk').textContent=session.correct;document.getElementById('examFail').textContent=session.wrong;}
+  st.answered++;
   updateStreak();
-  saveAll();
-
-  fb.style.display = 'block';
-  document.getElementById('nextBtnWrap').style.display = 'block';
+  // Обновляем статистику раздела
+  if(q.section){
+    const sid=q.section;
+    if(!st.sectionStats[sid])st.sectionStats[sid]=0;
+    // скользящее среднее
+    st.sectionStats[sid]=Math.round((st.sectionStats[sid]+( ok?100:0))/2);
+  }
+  save();
+  fb.style.display='block';
+  document.getElementById('nextWrap').style.display='block';
 }
 
-function updateStreak() {
-  const today = new Date().toDateString();
-  const yesterday = new Date(Date.now() - 864e5).toDateString();
-  if (stats.lastDay === today) return;
-  if (stats.lastDay === yesterday) { stats.streak++; }
-  else if (stats.lastDay !== today) { stats.streak = 1; }
-  stats.lastDay = today;
+function toggleFav(){
+  const q=session.questions[session.idx];
+  if(st.favorites.has(q.id)){st.favorites.delete(q.id);document.getElementById('favBtn').textContent='☆';}
+  else{st.favorites.add(q.id);document.getElementById('favBtn').textContent='★';showToast('Добавлено в избранное');}
+  save();
 }
 
-function nextQuestion() {
+function nextQ(){
   session.idx++;
-  if (session.idx >= session.questions.length) { showResult(); return; }
-  renderQuestion();
+  if(session.idx>=session.questions.length){showResult();return;}
+  renderQ();
 }
 
-function showResult() {
-  const total = session.questions.length;
-  const pct = Math.round(session.correct / total * 100);
-  document.getElementById('resultPct').textContent = pct + '%';
-
-  let stars = '', msg = '';
-  if (pct >= 90) { stars = '⭐⭐⭐'; msg = 'Превосходно! Готов к экзамену!'; }
-  else if (pct >= 70) { stars = '⭐⭐'; msg = 'Хорошо! Ещё немного практики.'; }
-  else if (pct >= 50) { stars = '⭐'; msg = 'Неплохо, но есть над чем работать.'; }
-  else { stars = ''; msg = 'Продолжай тренироваться!'; }
-
-  document.getElementById('resultStars').textContent = stars;
-  document.getElementById('resultMsg').textContent = msg;
-  document.getElementById('resCorrect').textContent = session.correct;
-  document.getElementById('resWrong').textContent = session.wrong;
-  document.getElementById('resBest').textContent = session.bestStreak;
-
-  goToRaw('screen-result');
+function showResult(){
+  const total=session.questions.length;
+  const pct=Math.round(session.correct/total*100);
+  document.getElementById('rPct').textContent=pct+'%';
+  let stars='',msg='';
+  if(pct>=90){stars='⭐⭐⭐';msg='Превосходно! Готов к экзамену!';}
+  else if(pct>=70){stars='⭐⭐';msg='Хорошо! Ещё немного практики.';}
+  else if(pct>=50){stars='⭐';msg='Неплохо, но есть над чем работать.';}
+  else{stars='';msg='Продолжай тренироваться!';}
+  document.getElementById('rStars').textContent=stars;
+  document.getElementById('rMsg').textContent=msg;
+  document.getElementById('rOk').textContent=session.correct;
+  document.getElementById('rErr').textContent=session.wrong;
+  document.getElementById('rBest').textContent=session.bestStreak;
+  // Результат экзамена
+  const er=document.getElementById('examResult');
+  if(session.isExam){
+    er.style.display='block';
+    const pass=session.correct>=12;
+    er.style.background=pass?'var(--greenbg)':'var(--redbg)';
+    er.style.color=pass?'var(--greentx)':'var(--redtx)';
+    er.innerHTML='<div style="font-size:28px;margin-bottom:4px">'+(pass?'🎉':'😔')+'</div><div style="font-weight:700;font-size:18px">'+(pass?'СДАН!':'НЕ СДАН')+'</div><div style="font-size:13px;margin-top:4px">'+session.correct+' из '+total+' · нужно 12</div>';
+  }else er.style.display='none';
+  gotoRaw('s-result');
 }
 
-function confirmExitTest() {
-  if (confirm('Выйти из теста? Прогресс будет потерян.')) goTo('screen-home');
+function updateStreak(){
+  const today=new Date().toDateString();
+  const yest=new Date(Date.now()-864e5).toDateString();
+  if(st.lastDay===today)return;
+  st.streak=st.lastDay===yest?st.streak+1:1;
+  st.lastDay=today;
 }
 
-// ════ СПИСОК ════
-function renderList() {
-  const cont = document.getElementById('listContent');
-  const all = allQuestions();
-  if (all.length === 0) {
-    cont.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="12" rx="10" ry="4"/><path d="M2 12c0 2.21 4.48 4 10 4s10-1.79 10-4"/><path d="M2 16c0 2.21 4.48 4 10 4s10-1.79 10-4"/><path d="M2 8v8M22 8v8"/></svg><strong>База пуста</strong><p>Загрузите скриншоты с вопросами</p></div>';
-    return;
-  }
-  const userQs = db.questions;
-  let html = '<p class="sub" style="margin-bottom:1rem;">' + all.length + ' вопросов · ' + DEMO_QS.length + ' демо + ' + userQs.length + ' ваших</p>';
+function confirmExit(){if(confirm('Выйти из теста?'))goto('s-home');}
 
-  if (userQs.length > 0) {
-    html += '<div class="section-label">Ваши вопросы (' + userQs.length + ')</div>';
-    userQs.forEach(q => {
-      const errs = stats.mistakes[q.id] || 0;
-      html += `<div class="q-card">
-        <button class="delete-btn" onclick="deleteQuestion('${q.id}')" title="Удалить">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-        </button>
-        ${errs > 0 ? '<span class="q-card-errors">✗ ' + errs + ' ошиб.' + (errs===1?'':'к') + '</span>' : ''}
-        <div class="q-card-text">${q.q}</div>
-        <div class="q-card-answer">✓ ${q.opts[q.correct]}</div>
-      </div>`;
-    });
-    html += '<div class="divider"></div>';
-  }
-
-  html += '<div class="section-label">Демо-вопросы (' + DEMO_QS.length + ')</div>';
-  DEMO_QS.forEach(q => {
-    html += `<div class="q-card">
-      <span class="tag" style="margin-bottom:5px; display:inline-block">демо</span>
-      <div class="q-card-text">${q.q}</div>
-      <div class="q-card-answer">✓ ${q.opts[q.correct]}</div>
+// ══ СТАТИСТИКА ══
+function renderStats(){
+  document.getElementById('stTotal').textContent=st.answered;
+  document.getElementById('stAcc').textContent=st.answered>0?Math.round(st.correct/st.answered*100)+'%':'—';
+  document.getElementById('stStreak').textContent=st.streak;
+  const cont=document.getElementById('statSections');
+  cont.innerHTML=SECTIONS.map(s=>{
+    const qs=secQ(s.id);
+    const acc=st.sectionStats[s.id]||0;
+    const mis=qs.filter(q=>(st.mistakes[q.id]||0)>0).length;
+    return`<div class="stat-section-row">
+      <div style="width:24px;height:24px;border-radius:50%;background:var(--bluebg);color:var(--bluetx);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${s.id}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.name}</div>
+        <div style="height:3px;background:var(--s1);border-radius:2px;margin-top:4px"><div style="height:3px;background:var(--green);border-radius:2px;width:${acc}%"></div></div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;margin-left:8px">
+        <div style="font-size:13px;font-weight:600">${qs.length>0?acc+'%':'—'}</div>
+        ${mis>0?`<div style="font-size:11px;color:var(--redtx)">${mis} ош.</div>`:''}
+      </div>
     </div>`;
-  });
-
-  cont.innerHTML = html;
+  }).join('');
 }
 
-function deleteQuestion(id) {
-  if (!confirm('Удалить вопрос?')) return;
-  db.questions = db.questions.filter(q => q.id !== id);
-  delete stats.mistakes[id];
-  saveAll();
-  renderList();
-  updateHome();
-  showToast('Вопрос удалён');
-}
-
-// ════ ЗАГРУЗКА И ПАРСИНГ ════
-let pendingQ = null;
-
-function handleFile(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const img = document.getElementById('previewImg');
-    img.src = ev.target.result;
-    img.style.display = 'block';
-    parseImage(ev.target.result);
+// ══ ЗАГРУЗКА ══
+function handleFile(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  pendingQ=null;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=document.getElementById('prevImg');
+    img.src=ev.target.result;
+    img.style.display='block';
+    parseImg(ev.target.result, file.type||'image/jpeg');
   };
   reader.readAsDataURL(file);
 }
 
-async function parseImage(dataUrl) {
-  const status = document.getElementById('statusBox');
-  const card = document.getElementById('parsedCard');
-  const actions = document.getElementById('uploadActions');
+async function parseImg(dataUrl, mediaType){
+  const status=document.getElementById('statusBox');
+  status.style.display='block'; status.textContent='⏳ Распознаю вопрос...';
+  document.getElementById('parsedCard').style.display='none';
+  document.getElementById('uploadActions').style.display='none';
 
-  status.style.display = 'block';
-  status.textContent = '⏳ Распознаю вопрос и варианты ответов...';
-  card.style.display = 'none';
-  actions.style.display = 'none';
-  pendingQ = null;
+  const base64=dataUrl.split(',')[1];
+  const prompt=`Это скриншот из приложения для подготовки к экзамену 1С. Правильный ответ выделен зелёным цветом. Может быть от 2 до 8 вариантов. Игнорируй: "Предыдущий", "Следующий", "Подсказка", "Ссылка на ИТС", номер вопроса, метки категорий. Ответь ТОЛЬКО валидным JSON без markdown: {"q":"вопрос","opts":["вар1","вар2"],"correct":0}`;
 
-  const base64 = dataUrl.split(',')[1];
-  const mediaType = dataUrl.split(';')[0].split(':')[1];
-
-  const prompt = `Это скриншот из приложения для подготовки к экзамену 1С.
-Правильный ответ выделен зелёным цветом (зелёный фон кнопки).
-Может быть от 2 до 8 вариантов ответа.
-Игнорируй элементы интерфейса: кнопки "Предыдущий", "Следующий", "Подсказка", "Ссылка на ИТС", заголовки с номером вопроса, метки категорий.
-Извлеки:
-1. Текст вопроса
-2. Все варианты ответов (только кнопки с вариантами)
-3. Индекс правильного ответа (0-based, считая сверху вниз)
-
-Ответь ТОЛЬКО валидным JSON без markdown, без пояснений:
-{"q":"текст вопроса","opts":["вариант1","вариант2","вариант3"],"correct":2}`;
-
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: [
-          { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
-          { type: 'text', text: prompt }
-        ]}]
-      })
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:[
+        {type:'image',source:{type:'base64',media_type:mediaType,data:base64}},
+        {type:'text',text:prompt}
+      ]}]})
     });
-
-    const data = await resp.json();
-    if (data.error) throw new Error(data.error.message);
-
-    const text = data.content.map(c => c.text || '').join('');
-    const clean = text.replace(/```json|```/g,'').trim();
-    const parsed = JSON.parse(clean);
-
-    if (!parsed.q || !Array.isArray(parsed.opts) || parsed.opts.length < 2 || parsed.correct === undefined) {
-      throw new Error('Неверный формат ответа');
-    }
-    if (parsed.correct < 0 || parsed.correct >= parsed.opts.length) {
-      throw new Error('Некорректный индекс правильного ответа');
-    }
-
-    pendingQ = { id: 'q_' + Date.now(), ...parsed };
-
-    status.style.display = 'none';
-    card.style.display = 'block';
-    document.getElementById('parsedQ').textContent = parsed.q;
-
-    let optsHtml = '';
-    parsed.opts.forEach((opt, i) => {
-      const isCorrect = i === parsed.correct;
-      optsHtml += `<div class="parsed-opt ${isCorrect ? 'correct' : ''}">${LETTERS[i]||i+1}. ${opt}${isCorrect ? ' ✓' : ''}</div>`;
-    });
-    document.getElementById('parsedOpts').innerHTML = optsHtml;
-    actions.style.display = 'flex';
-
-  } catch(err) {
-    status.style.display = 'block';
-    status.textContent = '❌ Ошибка: ' + (err.message || 'не удалось распознать').replace('Failed to fetch', 'нет подключения к сети');
-    console.error(err);
+    const data=await resp.json();
+    if(data.error)throw new Error(data.error.message);
+    const text=data.content.map(c=>c.text||'').join('');
+    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
+    if(!parsed.q||!Array.isArray(parsed.opts)||parsed.correct===undefined)throw new Error('Неверный формат');
+    pendingQ={id:'q_'+Date.now(),...parsed};
+    status.style.display='none';
+    document.getElementById('parsedQ').textContent=parsed.q;
+    document.getElementById('parsedOpts').innerHTML=parsed.opts.map((o,i)=>
+      `<div class="parsed-opt${i===parsed.correct?' ok':''}">${LETTERS[i]||i+1}. ${o}${i===parsed.correct?' ✓':''}</div>`
+    ).join('');
+    document.getElementById('parsedCard').style.display='block';
+    document.getElementById('uploadActions').style.display='flex';
+  }catch(err){
+    status.textContent='❌ Ошибка: '+(err.message||'').replace('Failed to fetch','нет подключения к сети');
   }
 }
 
-function saveQuestion() {
-  if (!pendingQ) return;
-  // Проверяем дубликат
-  const isDuplicate = allQuestions().some(q => q.q.trim() === pendingQ.q.trim());
-  if (isDuplicate) { showToast('Этот вопрос уже есть в базе'); return; }
+function saveQ(){
+  if(!pendingQ)return;
+  const sec=parseInt(document.getElementById('sectionSelect').value);
+  if(!sec){showToast('Выберите раздел!');return;}
+  const isDup=allQ().some(q=>q.q.trim()===pendingQ.q.trim());
+  if(isDup){showToast('Этот вопрос уже есть в базе');return;}
+  pendingQ.section=sec;
   db.questions.push(pendingQ);
-  saveAll();
-  showToast('Вопрос сохранён! Всего: ' + allQuestions().length);
+  save();
+  showToast('Сохранено! Всего: '+allQ().length);
   resetUpload();
   updateHome();
 }
 
-function resetUpload() {
-  document.getElementById('previewImg').style.display = 'none';
-  document.getElementById('statusBox').style.display = 'none';
-  document.getElementById('parsedCard').style.display = 'none';
-  document.getElementById('uploadActions').style.display = 'none';
-  document.getElementById('fileInput').value = '';
-  pendingQ = null;
+function resetUpload(){
+  document.getElementById('prevImg').style.display='none';
+  document.getElementById('statusBox').style.display='none';
+  document.getElementById('parsedCard').style.display='none';
+  document.getElementById('uploadActions').style.display='none';
+  document.getElementById('fi').value='';
+  pendingQ=null;
 }
 
-// ════ УТИЛИТЫ ════
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+// ══ БЭКАП ══
+function exportQ(){
+  if(!db.questions.length){showToast('Нет вопросов для экспорта');return;}
+  const blob=new Blob([JSON.stringify({version:2,exportDate:new Date().toISOString(),questions:db.questions},null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='1c-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  document.getElementById('expHint').textContent='✓ Скачано '+db.questions.length+' вопросов';
 }
 
-// ════ СТАРТ ════
-loadAll();
-updateHome();
-
-// Service Worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
+function importQ(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      const qs=data.questions||(Array.isArray(data)?data:null);
+      if(!qs)throw new Error('Неверный формат');
+      let added=0,skipped=0;
+      const existing=new Set(db.questions.map(q=>q.q.trim()));
+      qs.forEach(q=>{
+        if(!q.q||!Array.isArray(q.opts)||q.correct===undefined){skipped++;return;}
+        if(existing.has(q.q.trim())){skipped++;return;}
+        if(!q.id)q.id='q_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+        db.questions.push(q); existing.add(q.q.trim()); added++;
+      });
+      save(); updateHome();
+      document.getElementById('impHint').textContent='✓ Добавлено: '+added+' · Пропущено: '+skipped;
+      showToast('Импортировано: '+added);
+    }catch(err){document.getElementById('impHint').textContent='❌ '+err.message;}
+    e.target.value='';
+  };
+  reader.readAsText(file,'utf-8');
 }
+
+function resetAll(){
+  if(!confirm('Удалить все вопросы и статистику?\n\nСначала сделайте экспорт!'))return;
+  db={questions:[]};
+  st={answered:0,correct:0,streak:0,lastDay:'',mistakes:{},favorites:new Set(),sectionStats:{}};
+  save(); updateHome(); showToast('Данные сброшены');
+}
+
+// ══ УТИЛИТЫ ══
+let toastT;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ══ INIT ══
+load(); updateHome();
+
+// Заполняем select разделов
+const sel=document.getElementById('sectionSelect');
+SECTIONS.forEach(s=>{
+  const opt=document.createElement('option');
+  opt.value=s.id; opt.textContent=s.id+'. '+s.name;
+  sel.appendChild(opt);
+});
+
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
 </html>
