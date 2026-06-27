@@ -206,6 +206,10 @@ h2{font-size:18px;font-weight:600;margin-bottom:.75rem}
   </div>
   <div class="section-badge" id="qSection" style="display:none"></div>
   <div class="q-text" id="qText"></div>
+  <div id="qImg" style="display:none;margin-bottom:1rem">
+    <img id="qImgEl" style="max-width:100%;border-radius:8px;border:.5px solid var(--border);cursor:zoom-in" onclick="openLightbox(this.src)">
+    <div style="font-size:11px;color:var(--t3);margin-top:4px;text-align:center">Нажми для увеличения</div>
+  </div>
   <div class="options" id="opts"></div>
   <div class="feedback" id="fb"></div>
   <div style="margin-top:1.25rem;display:none" id="nextWrap">
@@ -246,6 +250,11 @@ h2{font-size:18px;font-weight:600;margin-bottom:.75rem}
   <div id="statSections"></div>
 </div>
 
+<!-- ══ ЛАЙТБОКС ══ -->
+<div id="lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;align-items:center;justify-content:center;padding:1rem">
+  <img id="lightboxImg" style="max-width:100%;max-height:100%;border-radius:8px;object-fit:contain">
+</div>
+
 <!-- ══ ДОБАВИТЬ ВОПРОС ══ -->
 <div id="s-upload" class="screen">
   <div class="nav-back" onclick="goto('s-home')">‹ Назад</div>
@@ -255,6 +264,16 @@ h2{font-size:18px;font-weight:600;margin-bottom:.75rem}
   <div class="card">
     <div class="sec-lbl" style="margin-bottom:.5rem">Текст вопроса</div>
     <textarea id="mQ" placeholder="Введи текст вопроса..." style="width:100%;min-height:90px;padding:10px 12px;border:.5px solid var(--bstrong);border-radius:var(--r);background:var(--surface);color:var(--text);font-size:14px;font-family:inherit;resize:vertical;line-height:1.5"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="sec-lbl" style="margin-bottom:.5rem">Картинка к вопросу (необязательно)</div>
+    <div id="imgPreviewWrap" style="display:none;margin-bottom:.75rem;position:relative">
+      <img id="imgPreview" style="max-width:100%;border-radius:8px;border:.5px solid var(--border)">
+      <button onclick="removeImg()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.6);border:none;color:#fff;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:16px;line-height:1">×</button>
+    </div>
+    <button class="btn" onclick="document.getElementById('imgInput').click()">🖼 Прикрепить картинку</button>
+    <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="handleImgAttach(event)">
   </div>
 
   <div class="card">
@@ -447,6 +466,14 @@ function renderQ(){
   // Избранное
   document.getElementById('favBtn').textContent=st.favorites.has(q.id)?'★':'☆';
   document.getElementById('qText').textContent=q.q;
+  // Картинка
+  const qImg=document.getElementById('qImg');
+  if(q.img){
+    document.getElementById('qImgEl').src=q.img;
+    qImg.style.display='block';
+  } else {
+    qImg.style.display='none';
+  }
   // Серия
   const sb2=document.getElementById('streakBadge');
   if(session.curStreak>=2){sb2.style.display='inline-block';document.getElementById('sBadgeN').textContent=session.curStreak;}
@@ -579,7 +606,53 @@ function renderStats(){
   }).join('');
 }
 
-// ══ РУЧНОЙ ВВОД ВОПРОСА ══
+// ══ ЛАЙТБОКС ══
+function openLightbox(src){
+  const lb=document.getElementById('lightbox');
+  document.getElementById('lightboxImg').src=src;
+  lb.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+  document.getElementById('lightbox').style.display='none';
+  document.body.style.overflow='';
+}
+
+// ══ КАРТИНКА К ВОПРОСУ ══
+let attachedImg=null;
+
+function handleImgAttach(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  // Сжимаем до разумного размера
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=new Image();
+    img.onload=()=>{
+      const canvas=document.createElement('canvas');
+      const MAX=800;
+      let w=img.width, h=img.height;
+      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      attachedImg=canvas.toDataURL('image/jpeg',0.75);
+      document.getElementById('imgPreview').src=attachedImg;
+      document.getElementById('imgPreviewWrap').style.display='block';
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  e.target.value='';
+}
+
+function removeImg(){
+  attachedImg=null;
+  document.getElementById('imgPreviewWrap').style.display='none';
+  document.getElementById('imgPreview').src='';
+}
+
+
 let manualOpts=[]; // {text, isCorrect}
 
 function initManual(){
@@ -631,7 +704,7 @@ function saveManualQ(){
   if(!sec){showToast('Выберите раздел');return;}
   const isDup=allQ().some(x=>x.q.trim()===q);
   if(isDup){showToast('Этот вопрос уже есть в базе');return;}
-  db.questions.push({id:'q_'+Date.now(),q,opts,correct,section:sec});
+  db.questions.push({id:'q_'+Date.now(),q,opts,correct,section:sec,img:attachedImg||null});
   save(); updateHome();
   showToast('Сохранено! Всего: '+allQ().length);
   resetManual();
@@ -640,6 +713,7 @@ function saveManualQ(){
 function resetManual(){
   document.getElementById('mQ').value='';
   document.getElementById('sectionSelect').value='';
+  removeImg();
   initManual();
 }
 
